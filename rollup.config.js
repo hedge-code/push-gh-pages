@@ -3,14 +3,13 @@ import json from "@rollup/plugin-json";
 import commonjs from "@rollup/plugin-commonjs";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 
-const file = (format) => `lib/push-gh-pages.${format}`;
+const file = (name) => `lib/${name}`;
 
 /**
  * @param {import('rollup').RollupOptions} config
  * @returns {import('rollup').RollupOptions}
  */
 const bundle = (config) => ({
-  input: "src/main.ts",
   plugins: [
     nodeResolve(),
     commonjs(),
@@ -22,15 +21,24 @@ const bundle = (config) => ({
 
 export default [
   bundle({
+    input: "src/cli.ts",
     output: {
-      file: file`mjs`,
+      file: file`cli.mjs`,
       format: "esm",
     },
   }),
   bundle({
+    input: "src/main.ts",
+    output: {
+      file: file`main.mjs`,
+      format: "esm",
+    },
+  }),
+  bundle({
+    input: "src/main.ts",
     watch: false,
     output: {
-      file: file`cjs`,
+      file: file`main.cjs`,
       format: "cjs",
     },
   }),

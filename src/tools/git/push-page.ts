@@ -17,15 +17,10 @@ export default async function pushGitPage({
   dist = "dist",
   nojekyll = false,
 }: PushGitPageProps) {
-  if (["master", "main", "dev"].includes(branch)) {
-    console.error("Protected branches breach!");
-    return;
-  }
+  if ([currentBranch, "master", "main", "dev"].includes(branch))
+    throw new Error("Protected branches breach!");
 
-  if (!fs.existsSync(dist)) {
-    console.error("Bundler output doesn't exists!");
-    return;
-  }
+  if (!fs.existsSync(dist)) throw new Error("Bundler output doesn't exists!");
 
   const isGitIgnore = fs.existsSync(".gitignore");
 

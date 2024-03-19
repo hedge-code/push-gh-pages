@@ -21,7 +21,9 @@
   "license": "MIT",
   "author": "HedgeCode <contact.hedgecode@gmail.com>",
   "type": "module",
-  "bin": "lib/push-gh-pages.mjs",
+  "bin": "lib/cli.mjs",
+  "main": "lib/main.cjs",
+  "module": "lib/main.mjs",
   "scripts": {
     "dev": "rollup -w -c",
     "build": "rollup -c",
