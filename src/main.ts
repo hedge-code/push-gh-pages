@@ -1,16 +1,11 @@
-import type { Arguments } from "./tools/arguments.ts";
-import type { IsMatchRemote } from "./tools/is-match/is-match.d.ts";
+import type { Arguments } from "./arguments.d.ts";
 
-import getGitState from "./tools/git/get-state.ts";
-import pushGitPage from "./tools/git/push-page.ts";
-import isMatchGithub from "./tools/is-match/github.ts";
+import getGitState from "./git/get-state.ts";
+import pushGitPage from "./git/push-page.ts";
 import getRemote from "./tools/get-remote.ts";
 
-async function pushPageFlow(options: Arguments, isMatchRemote: IsMatchRemote) {
-  const { hash, branch, origins } = await getGitState(
-    isMatchRemote,
-    options.remote,
-  );
+async function pushPageFlow(options: Arguments, regexp: RegExp) {
+  const { hash, branch, origins } = await getGitState(regexp, options.remote);
 
   if (origins) options.remote = getRemote(options.remote, origins);
 
@@ -24,7 +19,8 @@ async function pushPageFlow(options: Arguments, isMatchRemote: IsMatchRemote) {
 export default function main(
   options: Arguments,
   logger: Console = console,
+  regexp: RegExp = /github\.com\/([^/]+)\//,
 ): void {
-  const flow = pushPageFlow(options, isMatchGithub);
+  const flow = pushPageFlow(options, regexp);
   if (!options.silent) flow.catch((e) => logger.error(e));
 }

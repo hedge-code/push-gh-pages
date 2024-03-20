@@ -1,4 +1,4 @@
-import type { IsMatchRemote } from "./is-match/is-match.js";
+import type { IsMatchRemote } from "./is-match-remote.d.ts";
 
 export default function extractMatchOrigins(
   candidates: string[],

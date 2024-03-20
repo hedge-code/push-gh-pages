@@ -1,7 +1,8 @@
+import type { Arguments } from "../arguments.d.ts";
+
 import fs from "fs";
-import fsPromises from "fs/promises";
-import type { Arguments } from "../arguments.js";
-import execPromise from "../exec-promise.ts";
+import { cp, writeFile } from "fs/promises";
+import execPromise from "../tools/exec-promise.ts";
 
 interface PushGitPageProps extends Partial<Arguments> {
   currentBranch: string;
@@ -28,13 +29,12 @@ export default async function pushGitPage({
   await execPromise("git add .");
   if (isGitIgnore) await execPromise("git rm --cache .gitignore");
   await execPromise("git rm -r -f .");
-  const dirPromises = [fsPromises.cp(`./${dist}`, ".", { recursive: true })];
-  if (nojekyll) dirPromises.push(fsPromises.writeFile(".nojekyll", ""));
+  const dirPromises = [cp(`./${dist}`, ".", { recursive: true })];
+  if (nojekyll) dirPromises.push(writeFile(".nojekyll", ""));
   await Promise.all(dirPromises);
   await execPromise("git add .");
   if (isGitIgnore) await execPromise("git rm -f .gitignore");
-  const createMessage = () => `Github pages based on ${hash}`;
-  await execPromise(`git commit -m "${message || createMessage()}"`);
+  await execPromise(`git commit -m "${message || `Pages based on ${hash}`}"`);
   await execPromise(`git push -u -f ${remote} HEAD:${branch}`);
   await execPromise(`git switch ${currentBranch}`);
   await execPromise(`git branch -D ${branch}`);

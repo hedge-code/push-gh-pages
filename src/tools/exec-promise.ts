@@ -1,4 +1,4 @@
 import { exec } from "child_process";
-import util from "util";
+import { promisify } from "util";
 
-export default util.promisify(exec);
+export default promisify(exec);

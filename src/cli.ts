@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import type { Arguments } from "./tools/arguments.d.ts";
+import type { Arguments } from "./arguments.d.ts";
 
 import { program } from "commander";
 import { version } from "../package.json" assert { type: "json" };
