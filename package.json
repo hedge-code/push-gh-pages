@@ -24,6 +24,9 @@
   "bin": "lib/cli.mjs",
   "main": "lib/main.cjs",
   "module": "lib/main.mjs",
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "dev": "rollup -w -c",
     "build": "rollup -c",
